@@ -1,0 +1,8 @@
+#answerfile
+
+controller: "avicon-01a.corp.local"
+username: "admin"
+password: "VMware1!"
+vrf: "global"
+tenant: "admin"
+health_monitor: "GET_Monitor"

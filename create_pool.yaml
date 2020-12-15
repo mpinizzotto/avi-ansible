@@ -1,0 +1,47 @@
+- name: "Create Pool"
+  connection: local
+  hosts: localhost
+  roles:
+  - avinetworks.avisdk
+  #- avinetworks.avimigrationtools
+  vars_files:
+  - answerfile.yaml
+  tasks:
+  - avi_pool:
+      api_context: '{{api_context | default(omit)}}'
+      api_version: 18.2.11
+      #application_persistence_profile_ref: /api/applicationpersistenceprofile/?name=
+      cloud_ref: /api/cloud?name=Default-Cloud
+      controller: '{{ controller }}'
+      description: null
+      fail_action:
+        type: FAIL_ACTION_CLOSE_CONN
+      health_monitor_refs:
+      - /api/healthmonitor/?name=System-HTTP
+      lb_algorithm: LB_ALGORITHM_ROUND_ROBIN
+      name: ansible_vs_pool
+      password: '{{ password }}'
+      servers:
+      - description: ''
+        enabled: true
+        hostname: web-01a
+        ip:
+          addr: 192.168.120.31
+          type: V4
+        port: '80'
+      - description: ''
+        enabled: true
+        hostname: web-02a
+        ip:
+          addr: 192.168.120.32
+          type: V4
+        port: '80'
+      #ssl_profile_ref: /api/sslprofile/?name=
+      state: '{{ state | default(omit)}}'
+      tenant: "{{ tenant }}"
+      tenant_ref: /api/tenant/?name=admin
+      username: '{{ username }}'
+      vrf_ref: /api/vrfcontext/?name=global
+    name: 'Create or Update Pool: ansible_vs_pool'
+    tags:
+    - ansible_vs

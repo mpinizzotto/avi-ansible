@@ -1,0 +1,23 @@
+---
+
+- connection: local
+  hosts: localhost
+  roles:
+  - avinetworks.avisdk
+  #- avinetworks.avimigrationtools
+  vars_files:
+  - answerfile.yaml
+
+  tasks:
+  - name: 'Create or Update Tenant: uat
+    avi_tenant:
+      api_context: '{{ api_context | default(omit)}}'
+      api_version: 18.2.11 #"{{ api_version }}"
+      controller: '{{ controller }}'
+      local: true
+      name: uat
+      password: '{{ password }}'
+      state: '{{ state | default(omit)}}'
+      username: '{{ username }}'
+    tags:
+    - uat
