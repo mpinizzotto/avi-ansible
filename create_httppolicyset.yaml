@@ -37,3 +37,38 @@
     name: 'Create or Update HTTPPolicySet: httppolicyset-ansible_vs'
     tags:
       - ansible_vs             
+
+  - avi_httppolicyset:
+      api_context: '{{api_context | default(omit)}}'
+      api_version: 18.2.11
+      controller: '{{ controller }}'
+      http_request_policy:
+        rules:
+        - enable: true
+          index: 1
+          match:
+            path:
+              match_case: INSENSITIVE
+              #list of strings
+              match_str: [ "/othersecureuri", "/secureuri" ]
+              match_criteria: BEGINS_WITH
+          name: Black-List-Path
+          switching_action:
+            action: HTTP_SWITCHING_SELECT_LOCAL 
+            status_code: HTTP_LOCAL_RESPONSE_STATUS_CODE_403
+      is_internal_policy: false
+      name: httppolicyset-black-list-path
+      password: '{{ password }}'
+      state: '{{ state | default(omit)}}'
+      tenant: "{{ tenant }}"
+      tenant_ref: /api/tenant/?name=admin
+      username: '{{ username }}'
+    name: 'Create or Update HTTPPolicySet: httppolicyset-black-list-path'
+    tags:
+      - ansible_vs
+
+
+
+
+
+
